@@ -49,7 +49,6 @@ func (client *Client) get(queryParams url.Values, uri string) (*http.Response, e
   }
 
   req.SetBasicAuth(client.AccountSid, client.AuthToken)
-  req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
   httpClient := &http.Client{}
   return httpClient.Do(req)
 }
