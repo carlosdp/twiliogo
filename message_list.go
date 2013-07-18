@@ -20,16 +20,48 @@ type MessageList struct {
   Messages []Message `json:"sms_messages"`
 }
 
-func (m MessageList) list() []Message {
+func (m *MessageList) list() []Message {
   return m.Messages
 }
 
-func (currentMessageList MessageList) NextPage() (*MessageList, error) {
+func (currentMessageList *MessageList) NextPage() (*MessageList, error) {
+  if currentMessageList.NextPageUri == "" {
+    return nil, Error {"No next page"}
+  }
+
+  return currentMessageList.getPage(currentMessageList.NextPageUri)
+}
+
+func (currentMessageList *MessageList) PreviousPage() (*MessageList, error) {
+  if currentMessageList.PreviousPageUri == "" {
+    return nil, Error {"No previous page"}
+  }
+
+  return currentMessageList.getPage(currentMessageList.NextPageUri)
+}
+
+func (currentMessageList *MessageList) FirstPage() (*MessageList, error) {
+  if currentMessageList.FirstPageUri == "" {
+    return nil, Error {"No first page"}
+  }
+
+  return currentMessageList.getPage(currentMessageList.FirstPageUri)
+}
+
+func (currentMessageList *MessageList) LastPage() (*MessageList, error) {
+  if currentMessageList.FirstPageUri == "" {
+    return nil, Error {"No last page"}
+  }
+
+  return currentMessageList.getPage(currentMessageList.LastPageUri)
+}
+
+func (currentMessageList *MessageList) getPage(uri string) (*MessageList, error) {
   var messageList *MessageList
 
   client := currentMessageList.Client
 
-  body, err := client.get(nil, currentMessageList.NextPageUri)
+  body, err := client.get(nil, uri)
 
   if err != nil {
     return messageList, err
