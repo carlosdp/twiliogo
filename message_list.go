@@ -1,5 +1,9 @@
 package twilio
 
+import (
+  "encoding/json"
+)
+
 type MessageList struct {
   Client *Client
   Start int `json:"start"`
@@ -18,4 +22,22 @@ type MessageList struct {
 
 func (m MessageList) list() []Message {
   return m.Messages
+}
+
+func (currentMessageList MessageList) NextPage() (*MessageList, error) {
+  var messageList *MessageList
+
+  client := currentMessageList.Client
+
+  body, err := client.get(nil, currentMessageList.NextPageUri)
+
+  if err != nil {
+    return messageList, err
+  }
+
+  messageList = new(MessageList)
+  messageList.Client = client
+  err = json.Unmarshal(body, messageList)
+
+  return messageList, err
 }
