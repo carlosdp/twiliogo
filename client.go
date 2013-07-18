@@ -8,6 +8,7 @@ import (
   "encoding/json"
 )
 
+const ROOT = "https://api.twilio.com"
 const VERSION = "2010-04-01"
 
 type Client struct {
@@ -17,12 +18,12 @@ type Client struct {
 }
 
 func newClient(accountSid, authToken string) *Client {
-  rootUrl := "https://api.twilio.com/" + VERSION + "/Accounts/" + accountSid
+  rootUrl := "/" + VERSION + "/Accounts/" + accountSid
   return &Client{accountSid, authToken, rootUrl}
 }
 
 func (client *Client) post(formValues url.Values, uri string) (*http.Response, error) {
-  req, err := http.NewRequest("POST", client.RootUrl + uri, strings.NewReader(formValues.Encode()))
+  req, err := http.NewRequest("POST", ROOT + client.RootUrl + uri, strings.NewReader(formValues.Encode()))
 
   if err != nil {
     return nil, err
@@ -42,7 +43,7 @@ func (client *Client) get(queryParams url.Values, uri string) ([]byte, error) {
   }
 
   params = strings.NewReader(queryParams.Encode())
-  req, err := http.NewRequest("GET", client.RootUrl + uri, params)
+  req, err := http.NewRequest("GET", ROOT + uri, params)
 
   if err != nil {
     return nil, err
@@ -71,7 +72,7 @@ func (client *Client) get(queryParams url.Values, uri string) ([]byte, error) {
 func (client *Client) GetMessageList() (*MessageList, error) {
   var messageList *MessageList
 
-  body, err := client.get(nil, "/SMS/Messages.json")
+  body, err := client.get(nil, client.RootUrl + "/SMS/Messages.json")
 
   if err != nil {
     return messageList, err
