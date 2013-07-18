@@ -72,6 +72,7 @@ func (client *Client) GetMessageList() (*MessageList, error) {
   }
 
   messageList = new(MessageList)
+  messageList.Client = client
   err = json.Unmarshal(body, messageList)
 
   return messageList, err
