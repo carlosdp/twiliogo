@@ -34,7 +34,7 @@ func (client *Client) post(formValues url.Values, uri string) (*http.Response, e
   return httpClient.Do(req)
 }
 
-func (client *Client) get(queryParams url.Values, uri string) (*http.Response, error) {
+func (client *Client) get(queryParams url.Values, uri string) ([]byte, error) {
   var params *strings.Reader
 
   if queryParams == nil {
@@ -50,21 +50,28 @@ func (client *Client) get(queryParams url.Values, uri string) (*http.Response, e
 
   req.SetBasicAuth(client.AccountSid, client.AuthToken)
   httpClient := &http.Client{}
-  return httpClient.Do(req)
-}
 
-func (client *Client) GetMessageList() (*MessageList, error) {
-  var messageList *MessageList
-
-  res, err:= client.get(nil, "/SMS/Messages.json")
+  res, err := httpClient.Do(req)
 
   if err != nil {
-    return messageList, err
+    return nil, err
   }
 
   defer res.Body.Close()
 
   body, err := ioutil.ReadAll(res.Body)
+
+  if err != nil {
+    return body, err
+  }
+
+  return body, err
+}
+
+func (client *Client) GetMessageList() (*MessageList, error) {
+  var messageList *MessageList
+
+  body, err := client.get(nil, "/SMS/Messages.json")
 
   if err != nil {
     return messageList, err
