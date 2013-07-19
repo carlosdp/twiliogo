@@ -88,19 +88,3 @@ func (client *TwilioClient) AuthToken() string {
 func (client *TwilioClient) RootUrl() string {
   return client.rootUrl
 }
-
-func GetMessageList(client Client) (*MessageList, error) {
-  var messageList *MessageList
-
-  body, err := client.get(nil, client.RootUrl() + "/SMS/Messages.json")
-
-  if err != nil {
-    return messageList, err
-  }
-
-  messageList = new(MessageList)
-  messageList.Client = client
-  err = json.Unmarshal(body, messageList)
-
-  return messageList, err
-}

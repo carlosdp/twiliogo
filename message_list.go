@@ -20,20 +20,44 @@ type MessageList struct {
   Messages []Message `json:"sms_messages"`
 }
 
-func (m *MessageList) list() []Message {
+func GetMessageList(client Client) (*MessageList, error) {
+  var messageList *MessageList
+
+  body, err := client.get(nil, client.RootUrl() + "/SMS/Messages.json")
+
+  if err != nil {
+    return messageList, err
+  }
+
+  messageList = new(MessageList)
+  messageList.Client = client
+  err = json.Unmarshal(body, messageList)
+
+  return messageList, err
+}
+
+func (m *MessageList) GetMessages() []Message {
   return m.Messages
 }
 
+func (currentMessageList *MessageList) HasNextPage() bool {
+  return currentMessageList.NextPageUri != ""
+}
+
 func (currentMessageList *MessageList) NextPage() (*MessageList, error) {
-  if currentMessageList.NextPageUri == "" {
+  if !currentMessageList.HasNextPage() {
     return nil, Error {"No next page"}
   }
 
   return currentMessageList.getPage(currentMessageList.NextPageUri)
 }
 
+func (currentMessageList *MessageList) HasPreviousPage() bool {
+  return currentMessageList.PreviousPageUri != ""
+}
+
 func (currentMessageList *MessageList) PreviousPage() (*MessageList, error) {
-  if currentMessageList.PreviousPageUri == "" {
+  if !currentMessageList.HasPreviousPage() {
     return nil, Error {"No previous page"}
   }
 
@@ -41,18 +65,10 @@ func (currentMessageList *MessageList) PreviousPage() (*MessageList, error) {
 }
 
 func (currentMessageList *MessageList) FirstPage() (*MessageList, error) {
-  if currentMessageList.FirstPageUri == "" {
-    return nil, Error {"No first page"}
-  }
-
   return currentMessageList.getPage(currentMessageList.FirstPageUri)
 }
 
 func (currentMessageList *MessageList) LastPage() (*MessageList, error) {
-  if currentMessageList.FirstPageUri == "" {
-    return nil, Error {"No last page"}
-  }
-
   return currentMessageList.getPage(currentMessageList.LastPageUri)
 }
 
