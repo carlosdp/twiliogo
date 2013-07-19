@@ -5,7 +5,7 @@ import (
 )
 
 type MessageList struct {
-  Client *Client
+  Client Client
   Start int `json:"start"`
   Total int `json:"total"`
   NumPages int `json:"num_pages"`

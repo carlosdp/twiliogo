@@ -11,31 +11,39 @@ import (
 const ROOT = "https://api.twilio.com"
 const VERSION = "2010-04-01"
 
-type Client struct {
-  AccountSid string
-  AuthToken string
-  RootUrl string
+type Client interface {
+  AccountSid() string
+  AuthToken() string
+  RootUrl() string
+  get(url.Values, string) ([]byte, error)
+  post(url.Values, string) (*http.Response, error)
 }
 
-func newClient(accountSid, authToken string) *Client {
+type TwilioClient struct {
+  accountSid string
+  authToken string
+  rootUrl string
+}
+
+func newClient(accountSid, authToken string) *TwilioClient {
   rootUrl := "/" + VERSION + "/Accounts/" + accountSid
-  return &Client{accountSid, authToken, rootUrl}
+  return &TwilioClient{accountSid, authToken, rootUrl}
 }
 
-func (client *Client) post(formValues url.Values, uri string) (*http.Response, error) {
-  req, err := http.NewRequest("POST", ROOT + client.RootUrl + uri, strings.NewReader(formValues.Encode()))
+func (client *TwilioClient) post(formValues url.Values, uri string) (*http.Response, error) {
+  req, err := http.NewRequest("POST", ROOT + client.RootUrl() + uri, strings.NewReader(formValues.Encode()))
 
   if err != nil {
     return nil, err
   }
 
-  req.SetBasicAuth(client.AccountSid, client.AuthToken)
+  req.SetBasicAuth(client.AccountSid(), client.AuthToken())
   req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
   httpClient := &http.Client{}
   return httpClient.Do(req)
 }
 
-func (client *Client) get(queryParams url.Values, uri string) ([]byte, error) {
+func (client *TwilioClient) get(queryParams url.Values, uri string) ([]byte, error) {
   var params *strings.Reader
 
   if queryParams == nil {
@@ -49,7 +57,7 @@ func (client *Client) get(queryParams url.Values, uri string) ([]byte, error) {
     return nil, err
   }
 
-  req.SetBasicAuth(client.AccountSid, client.AuthToken)
+  req.SetBasicAuth(client.AccountSid(), client.AuthToken())
   httpClient := &http.Client{}
 
   res, err := httpClient.Do(req)
@@ -69,10 +77,22 @@ func (client *Client) get(queryParams url.Values, uri string) ([]byte, error) {
   return body, err
 }
 
-func (client *Client) GetMessageList() (*MessageList, error) {
+func (client *TwilioClient) AccountSid() string {
+  return client.accountSid
+}
+
+func (client *TwilioClient) AuthToken() string {
+  return client.authToken
+}
+
+func (client *TwilioClient) RootUrl() string {
+  return client.rootUrl
+}
+
+func GetMessageList(client Client) (*MessageList, error) {
   var messageList *MessageList
 
-  body, err := client.get(nil, client.RootUrl + "/SMS/Messages.json")
+  body, err := client.get(nil, client.RootUrl() + "/SMS/Messages.json")
 
   if err != nil {
     return messageList, err
