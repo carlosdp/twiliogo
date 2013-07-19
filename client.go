@@ -16,7 +16,7 @@ type Client interface {
   AuthToken() string
   RootUrl() string
   get(url.Values, string) ([]byte, error)
-  post(url.Values, string) (*http.Response, error)
+  post(url.Values, string) ([]byte, error)
 }
 
 type TwilioClient struct {
@@ -30,8 +30,8 @@ func newClient(accountSid, authToken string) *TwilioClient {
   return &TwilioClient{accountSid, authToken, rootUrl}
 }
 
-func (client *TwilioClient) post(formValues url.Values, uri string) (*http.Response, error) {
-  req, err := http.NewRequest("POST", ROOT + client.RootUrl() + uri, strings.NewReader(formValues.Encode()))
+func (client *TwilioClient) post(values url.Values, uri string) ([]byte, error) {
+  req, err := http.NewRequest("POST", ROOT + uri, strings.NewReader(values.Encode()))
 
   if err != nil {
     return nil, err
@@ -40,7 +40,32 @@ func (client *TwilioClient) post(formValues url.Values, uri string) (*http.Respo
   req.SetBasicAuth(client.AccountSid(), client.AuthToken())
   req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
   httpClient := &http.Client{}
-  return httpClient.Do(req)
+
+  res, err := httpClient.Do(req)
+
+  if err != nil {
+    return nil, err
+  }
+
+  defer res.Body.Close()
+
+  body, err := ioutil.ReadAll(res.Body)
+
+  if err != nil {
+    return body, err
+  }
+
+  if res.StatusCode != 200 && res.StatusCode != 201 {
+    if res.StatusCode == 500 {
+      return body, Error{"Server Error"}
+    } else {
+      twilioError := new(TwilioError)
+      json.Unmarshal(body, twilioError)
+      return body, twilioError
+    }
+  }
+
+  return body, err
 }
 
 func (client *TwilioClient) get(queryParams url.Values, uri string) ([]byte, error) {
