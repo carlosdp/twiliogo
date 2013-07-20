@@ -10,11 +10,11 @@ func TestCallList(t *testing.T) {
 
   callList, err := GetCallList(client)
 
-  assert.Nil(t, err, "Failed to retrieve call list")
+  if assert.Nil(t, err, "Failed to retrieve call list") {
+    calls := callList.GetCalls()
 
-  calls := callList.GetCalls()
-
-  assert.NotNil(t, calls, "Failed to retrieve calls")
+    assert.NotNil(t, calls, "Failed to retrieve calls")
+  }
 }
 
 func TestMakingCall(t *testing.T) {
@@ -22,9 +22,9 @@ func TestMakingCall(t *testing.T) {
 
   message, err := MakeCall(client, TEST_FROM_NUMBER, TO_NUMBER, Callback("http://test.com"))
 
-  assert.Nil(t, err, "Failed to make call")
-
-  assert.Equal(t, message.Status, "queued", "Making Call failed, status: " + message.Status)
+  if assert.Nil(t, err, "Failed to make call") {
+    assert.Equal(t, message.Status, "queued", "Making Call failed, status: " + message.Status)
+  }
 }
 
 func TestCallListNextPage(t *testing.T) {
@@ -32,11 +32,11 @@ func TestCallListNextPage(t *testing.T) {
 
   callList, err := GetCallList(client)
 
-  assert.Nil(t, err, "Failed to retrieve call list")
+  if assert.Nil(t, err, "Failed to retrieve call list") {
+    nextPageCallList, err := callList.NextPage()
 
-  nextPageCallList, err := callList.NextPage()
-
-  assert.Nil(t, err, "Failed to retrieve next page")
-
-  assert.Equal(t, nextPageCallList.Page, 1, "Page incorrect on next page")
+    if assert.Nil(t, err, "Failed to retrieve next page") {
+      assert.Equal(t, nextPageCallList.Page, 1, "Page incorrect on next page")
+    }
+  }
 }
