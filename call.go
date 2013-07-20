@@ -27,12 +27,15 @@ type Call struct {
   Uri string `json:"uri"`
 }
 
-func MakeCall(client Client, from, to string, optionals ...Optional) (*Call, error) {
+func MakeCall(client Client, from, to string, callback Optional, optionals ...Optional) (*Call, error) {
   var call *Call
 
   params := url.Values{}
   params.Set("From", from)
   params.Set("To", to)
+
+  callbackType, callbackParam := callback.GetParam()
+  params.Set(callbackType, callbackParam)
 
   for _, optional := range optionals {
     param, value := optional.GetParam()
