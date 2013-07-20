@@ -1,5 +1,10 @@
 package twilio
 
+import (
+  "net/url"
+  "encoding/json"
+)
+
 type Call struct {
   Sid string `json:"sid"`
   ParentCallSid string `json:"parent_call_sid"`
@@ -20,4 +25,24 @@ type Call struct {
   ForwardedFrom string `json:"forwarded_from"`
   CallerName string `json:"caller_name"`
   Uri string `json:"uri"`
+}
+
+func MakeCall(client Client, from, to, callback string) (*Call, error) {
+  var call *Call
+
+  params := url.Values{}
+  params.Set("From", from)
+  params.Set("To", to)
+  params.Set("Url", callback)
+
+  res, err := client.post(params, client.RootUrl() + "/Calls.json")
+
+  if err != nil {
+    return nil, err
+  }
+
+  call = new(Call)
+  err = json.Unmarshal(res, call)
+
+  return call, err
 }
