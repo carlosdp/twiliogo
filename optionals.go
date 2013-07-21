@@ -69,3 +69,39 @@ type Record string
 func (record Record) GetParams() (string, string) {
   return "Record", string(record)
 }
+
+type To string
+
+func (to To) GetParams() (string, string) {
+  return "To", string(to)
+}
+
+type From string
+
+func (from From) GetParams() (string, string) {
+  return "From", string(from)
+}
+
+type Status string
+
+func (status Status) GetParams() (string, string) {
+  return "Status", string(status)
+}
+
+type StartTime string
+
+func (startTime StartTime) GetParams() (string, string) {
+  return "StartTime", string(startTime)
+}
+
+type ParentCallSid string
+
+func (parentCallSid ParentCallSid) GetParams() (string, string) {
+  return "ParentCallSid", string(parentCallSid)
+}
+
+type DateSent string
+
+func (dateSent DateSent) GetParams() (string, string) {
+  return "DateSent", string(dateSent)
+}

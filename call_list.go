@@ -2,6 +2,7 @@ package twilio
 
 import (
   "encoding/json"
+  "net/url"
 )
 
 type CallList struct {
@@ -20,8 +21,15 @@ type CallList struct {
   Calls []Call `json:"calls"`
 }
 
-func GetCallList(client Client) (*CallList, error) {
+func GetCallList(client Client, optionals ...Optional) (*CallList, error) {
   var callList *CallList
+
+  params := url.Values{}
+
+  for _, optional := range optionals {
+    param, value := optional.GetParam()
+    params.Set(param, value)
+  }
 
   body, err := client.get(nil, client.RootUrl() + "/Calls.json")
 

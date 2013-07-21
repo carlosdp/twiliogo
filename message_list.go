@@ -2,6 +2,7 @@ package twilio
 
 import (
   "encoding/json"
+  "net/url"
 )
 
 type MessageList struct {
@@ -20,10 +21,17 @@ type MessageList struct {
   Messages []Message `json:"sms_messages"`
 }
 
-func GetMessageList(client Client) (*MessageList, error) {
+func GetMessageList(client Client, optionals ...Optional) (*MessageList, error) {
   var messageList *MessageList
 
-  body, err := client.get(nil, client.RootUrl() + "/SMS/Messages.json")
+  params := url.Values{}
+
+  for _, optional := range optionals {
+    param, value := optional.GetParam()
+    params.Set(param, value)
+  }
+
+  body, err := client.get(params, client.RootUrl() + "/SMS/Messages.json")
 
   if err != nil {
     return messageList, err
