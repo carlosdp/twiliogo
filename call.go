@@ -53,3 +53,18 @@ func MakeCall(client Client, from, to string, callback Optional, optionals ...Op
 
   return call, err
 }
+
+func GetCall(client Client, sid string) (*Call, error) {
+  var call *Call
+
+  res, err := client.get(nil, client.RootUrl() + "/Calls/" + sid + ".json")
+
+  if err != nil {
+    return nil, err
+  }
+
+  call = new(Call)
+  err = json.Unmarshal(res, call)
+
+  return call, err
+}

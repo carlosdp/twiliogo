@@ -40,3 +40,18 @@ func TestCallListNextPage(t *testing.T) {
     }
   }
 }
+
+func TestGetCall(t *testing.T) {
+  client := newClient(API_KEY, API_TOKEN)
+
+  callList, err := GetCallList(client)
+
+  if assert.Nil(t, err, "Failed to retrieve call list") {
+    callSid := callList.Calls[0].Sid
+    call, err := GetCall(client, callSid)
+
+    if assert.Nil(t, err, "Failed to retrieve call") {
+      assert.Equal(t, call.Sid, callSid, "Call was invalid")
+    }
+  }
+}
