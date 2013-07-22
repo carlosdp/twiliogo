@@ -39,3 +39,18 @@ func TestMessageListNextPage(t *testing.T) {
     }
   }
 }
+
+func TestGetMessage(t *testing.T) {
+  client := newClient(API_KEY, API_TOKEN)
+
+  messageList, err := GetMessageList(client)
+
+  if assert.Nil(t, err, "Failed to retrieve message list") {
+    messageSid := messageList.Messages[0].Sid
+    message, err := GetMessage(client, messageSid)
+
+    if assert.Nil(t, err, "Failed to retrieve message") {
+      assert.Equal(t, message.Sid, messageSid, "Message was invalid")
+    }
+  }
+}

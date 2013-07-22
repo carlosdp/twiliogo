@@ -41,3 +41,18 @@ func SendMessage(client Client, from string, to string, body string) (*Message, 
 
   return message, err
 }
+
+func GetMessage(client Client, sid string) (*Message, error) {
+  var message *Message
+
+  res, err := client.get(nil, client.RootUrl() + "/SMS/Messages/" + sid + ".json")
+
+  if err != nil {
+    return nil, err
+  }
+
+  message = new(Message)
+  err = json.Unmarshal(res, message)
+
+  return message, err
+}
