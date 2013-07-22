@@ -99,6 +99,16 @@ func (client *TwilioClient) get(queryParams url.Values, uri string) ([]byte, err
     return body, err
   }
 
+  if res.StatusCode != 200 && res.StatusCode != 201 {
+    if res.StatusCode == 500 {
+      return body, Error{"Server Error"}
+    } else {
+      twilioError := new(TwilioError)
+      json.Unmarshal(body, twilioError)
+      return body, twilioError
+    }
+  }
+
   return body, err
 }
 
