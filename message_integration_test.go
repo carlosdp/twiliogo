@@ -6,7 +6,7 @@ import (
 )
 
 func TestMessageList(t *testing.T) {
-  client := newClient(API_KEY, API_TOKEN)
+  client := NewClient(API_KEY, API_TOKEN)
 
   messageList, err := GetMessageList(client)
 
@@ -17,7 +17,7 @@ func TestMessageList(t *testing.T) {
 }
 
 func TestSendSMS(t *testing.T) {
-  client := newClient(TEST_KEY, TEST_TOKEN)
+  client := NewClient(TEST_KEY, TEST_TOKEN)
 
   message, err := SendMessage(client, TEST_FROM_NUMBER, TO_NUMBER, "Test Message")
 
@@ -27,7 +27,7 @@ func TestSendSMS(t *testing.T) {
 }
 
 func TestMessageListNextPage(t *testing.T) {
-  client := newClient(API_KEY, API_TOKEN)
+  client := NewClient(API_KEY, API_TOKEN)
 
   messageList, err := GetMessageList(client)
 
@@ -41,7 +41,7 @@ func TestMessageListNextPage(t *testing.T) {
 }
 
 func TestGetMessage(t *testing.T) {
-  client := newClient(API_KEY, API_TOKEN)
+  client := NewClient(API_KEY, API_TOKEN)
 
   messageList, err := GetMessageList(client)
 

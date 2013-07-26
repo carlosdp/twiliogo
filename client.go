@@ -25,7 +25,7 @@ type TwilioClient struct {
   rootUrl string
 }
 
-func newClient(accountSid, authToken string) *TwilioClient {
+func NewClient(accountSid, authToken string) *TwilioClient {
   rootUrl := "/" + VERSION + "/Accounts/" + accountSid
   return &TwilioClient{accountSid, authToken, rootUrl}
 }

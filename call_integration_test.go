@@ -6,7 +6,7 @@ import (
 )
 
 func TestCallList(t *testing.T) {
-  client := newClient(API_KEY, API_TOKEN)
+  client := NewClient(API_KEY, API_TOKEN)
 
   callList, err := GetCallList(client)
 
@@ -18,7 +18,7 @@ func TestCallList(t *testing.T) {
 }
 
 func TestMakingCall(t *testing.T) {
-  client := newClient(TEST_KEY, TEST_TOKEN)
+  client := NewClient(TEST_KEY, TEST_TOKEN)
 
   message, err := MakeCall(client, TEST_FROM_NUMBER, TO_NUMBER, Callback("http://test.com"))
 
@@ -28,7 +28,7 @@ func TestMakingCall(t *testing.T) {
 }
 
 func TestCallListNextPage(t *testing.T) {
-  client := newClient(API_KEY, API_TOKEN)
+  client := NewClient(API_KEY, API_TOKEN)
 
   callList, err := GetCallList(client)
 
@@ -42,7 +42,7 @@ func TestCallListNextPage(t *testing.T) {
 }
 
 func TestGetCall(t *testing.T) {
-  client := newClient(API_KEY, API_TOKEN)
+  client := NewClient(API_KEY, API_TOKEN)
 
   callList, err := GetCallList(client)
 
