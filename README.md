@@ -12,15 +12,17 @@ go get github.com/carlosdp/twilio-go
 ## Send a Text
 
 ``` go
+package main
+
 import (
   "fmt"
   "github.com/carlosdp/twilio-go
 )
 
 func main() {
-  client := twilio.NewClient("<ACCOUNT_SID", "<AUTH_TOKEN")
+  client := twilio.NewClient("<ACCOUNT_SID", "<AUTH_TOKEN>")
 
-  message, err := client.SendMessage("3334445555", "2223334444", "Hello World!")
+  message, err := twilio.SendMessage(client, "3334445555", "2223334444", "Hello World!")
 
   if err != nil {
     fmt.Println(err)
@@ -33,6 +35,8 @@ func main() {
 ## Make a Call
 
 ``` go
+package main
+
 import (
   "fmt"
   "github.com/carlosdp/twilio-go"
@@ -41,7 +45,7 @@ import (
 func main() {
   client := twilio.NewClient("<ACCOUNT_SID>", "<AUTH_TOKEN>")
 
-  call, err := client.MakeCall("8883332222", "3334443333")
+  call, err := twilio.MakeCall(client, "8883332222", "3334443333")
 
   if err != nil {
     fmt.Println(err)
