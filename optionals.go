@@ -18,90 +18,90 @@ func (applicationSid ApplicationSid) GetParam() (string, string) {
 
 type Method string
 
-func (method Method) GetParams() (string, string) {
+func (method Method) GetParam() (string, string) {
   return "Method", string(method)
 }
 
 type FallbackUrl string
 
-func (fallbackUrl FallbackUrl) GetParams() (string, string) {
+func (fallbackUrl FallbackUrl) GetParam() (string, string) {
   return "FallbackUrl", string(fallbackUrl)
 }
 
 type FallbackMethod string
 
-func (fallbackMethod FallbackMethod) GetParams() (string, string) {
+func (fallbackMethod FallbackMethod) GetParam() (string, string) {
   return "FallbackMethod", string(fallbackMethod)
 }
 
 type StatusCallback string
 
-func (statusCallback StatusCallback) GetParams() (string, string) {
+func (statusCallback StatusCallback) GetParam() (string, string) {
   return "StatusCallback", string(statusCallback)
 }
 
 type StatusCallbackMethod string
 
-func (statusCallbackMethod StatusCallbackMethod) GetParams() (string, string) {
+func (statusCallbackMethod StatusCallbackMethod) GetParam() (string, string) {
   return "StatusCallbackMethod", string(statusCallbackMethod)
 }
 
 type SendDigits string
 
-func (sendDigits SendDigits) GetParams() (string, string) {
+func (sendDigits SendDigits) GetParam() (string, string) {
   return "SendDigits", string(sendDigits)
 }
 
 type IfMachine string
 
-func (ifMachine IfMachine) GetParams() (string, string) {
+func (ifMachine IfMachine) GetParam() (string, string) {
   return "IfMachine", string(ifMachine)
 }
 
 type Timeout string
 
-func (timeout Timeout) GetParams() (string, string) {
+func (timeout Timeout) GetParam() (string, string) {
   return "Timeout", string(timeout)
 }
 
 type Record string
 
-func (record Record) GetParams() (string, string) {
+func (record Record) GetParam() (string, string) {
   return "Record", string(record)
 }
 
 type To string
 
-func (to To) GetParams() (string, string) {
+func (to To) GetParam() (string, string) {
   return "To", string(to)
 }
 
 type From string
 
-func (from From) GetParams() (string, string) {
+func (from From) GetParam() (string, string) {
   return "From", string(from)
 }
 
 type Status string
 
-func (status Status) GetParams() (string, string) {
+func (status Status) GetParam() (string, string) {
   return "Status", string(status)
 }
 
 type StartTime string
 
-func (startTime StartTime) GetParams() (string, string) {
+func (startTime StartTime) GetParam() (string, string) {
   return "StartTime", string(startTime)
 }
 
 type ParentCallSid string
 
-func (parentCallSid ParentCallSid) GetParams() (string, string) {
+func (parentCallSid ParentCallSid) GetParam() (string, string) {
   return "ParentCallSid", string(parentCallSid)
 }
 
 type DateSent string
 
-func (dateSent DateSent) GetParams() (string, string) {
+func (dateSent DateSent) GetParam() (string, string) {
   return "DateSent", string(dateSent)
 }
