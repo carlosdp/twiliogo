@@ -1,4 +1,4 @@
-package twilio
+package twiliogo
 
 type Optional interface {
   GetParam() (string, string)

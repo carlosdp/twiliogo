@@ -1,4 +1,4 @@
-package twilio
+package twiliogo
 
 import (
   "net/url"
