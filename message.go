@@ -22,7 +22,7 @@ type Message struct {
   Uri string `json:"uri"`
 }
 
-func SendMessage(client Client, from string, to string, body string) (*Message, error) {
+func NewMessage(client Client, from string, to string, body string) (*Message, error) {
   var message *Message
 
   params := url.Values{}

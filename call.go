@@ -27,7 +27,7 @@ type Call struct {
   Uri string `json:"uri"`
 }
 
-func MakeCall(client Client, from, to string, callback Optional, optionals ...Optional) (*Call, error) {
+func NewCall(client Client, from, to string, callback Optional, optionals ...Optional) (*Call, error) {
   var call *Call
 
   params := url.Values{}

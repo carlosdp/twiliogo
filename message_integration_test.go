@@ -19,7 +19,7 @@ func TestMessageList(t *testing.T) {
 func TestSendSMS(t *testing.T) {
   client := NewClient(TEST_KEY, TEST_TOKEN)
 
-  message, err := SendMessage(client, TEST_FROM_NUMBER, TO_NUMBER, "Test Message")
+  message, err := NewMessage(client, TEST_FROM_NUMBER, TO_NUMBER, "Test Message")
 
   if assert.Nil(t, err, "Failed to Send SMS") {
     assert.Equal(t, message.Status, "queued", "Sending SMS failed, status: " + message.Status)
