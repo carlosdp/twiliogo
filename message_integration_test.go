@@ -5,7 +5,7 @@ import (
   "github.com/stretchr/testify/assert"
 )
 
-func TestMessageList(t *testing.T) {
+func TestIntegrationMessageList(t *testing.T) {
   client := NewClient(API_KEY, API_TOKEN)
 
   messageList, err := GetMessageList(client)
@@ -16,7 +16,7 @@ func TestMessageList(t *testing.T) {
   }
 }
 
-func TestSendSMS(t *testing.T) {
+func TestIntegrationSendSMS(t *testing.T) {
   client := NewClient(TEST_KEY, TEST_TOKEN)
 
   message, err := NewMessage(client, TEST_FROM_NUMBER, TO_NUMBER, "Test Message")
@@ -26,7 +26,7 @@ func TestSendSMS(t *testing.T) {
   }
 }
 
-func TestMessageListNextPage(t *testing.T) {
+func TestIntegrationMessageListNextPage(t *testing.T) {
   client := NewClient(API_KEY, API_TOKEN)
 
   messageList, err := GetMessageList(client)
@@ -40,7 +40,7 @@ func TestMessageListNextPage(t *testing.T) {
   }
 }
 
-func TestGetMessage(t *testing.T) {
+func TestIntegrationGetMessage(t *testing.T) {
   client := NewClient(API_KEY, API_TOKEN)
 
   messageList, err := GetMessageList(client)

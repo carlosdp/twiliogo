@@ -57,7 +57,7 @@ func NewCall(client Client, from, to string, callback Optional, optionals ...Opt
 func GetCall(client Client, sid string) (*Call, error) {
   var call *Call
 
-  res, err := client.get(nil, client.RootUrl() + "/Calls/" + sid + ".json")
+  res, err := client.get(url.Values{}, client.RootUrl() + "/Calls/" + sid + ".json")
 
   if err != nil {
     return nil, err

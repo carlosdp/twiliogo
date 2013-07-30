@@ -5,7 +5,7 @@ import (
   "github.com/stretchr/testify/assert"
 )
 
-func TestCallList(t *testing.T) {
+func TestIntegrationCallList(t *testing.T) {
   client := NewClient(API_KEY, API_TOKEN)
 
   callList, err := GetCallList(client)
@@ -17,7 +17,7 @@ func TestCallList(t *testing.T) {
   }
 }
 
-func TestMakingCall(t *testing.T) {
+func TestIntegrationMakingCall(t *testing.T) {
   client := NewClient(TEST_KEY, TEST_TOKEN)
 
   call, err := NewCall(client, TEST_FROM_NUMBER, TO_NUMBER, Callback("http://test.com"))
@@ -27,7 +27,7 @@ func TestMakingCall(t *testing.T) {
   }
 }
 
-func TestCallListNextPage(t *testing.T) {
+func TestIntegrationCallListNextPage(t *testing.T) {
   client := NewClient(API_KEY, API_TOKEN)
 
   callList, err := GetCallList(client)
@@ -41,7 +41,7 @@ func TestCallListNextPage(t *testing.T) {
   }
 }
 
-func TestGetCall(t *testing.T) {
+func TestIntegrationGetCall(t *testing.T) {
   client := NewClient(API_KEY, API_TOKEN)
 
   callList, err := GetCallList(client)
