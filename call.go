@@ -68,3 +68,29 @@ func GetCall(client Client, sid string) (*Call, error) {
 
   return call, err
 }
+
+func (call *Call) Update(client Client, optionals ...Optional) error {
+  var tempCall *Call
+
+  params := url.Values{}
+
+  for _, optional := range optionals {
+    param, value := optional.GetParam()
+    params.Set(param, value)
+  }
+
+  res, err := client.post(params, client.RootUrl() + "/Calls/" + call.Sid + ".json")
+
+  if err != nil {
+    return err
+  }
+
+  tempCall = new(Call)
+  err = json.Unmarshal(res, tempCall)
+
+  if err == nil {
+    call = tempCall
+  }
+
+  return err
+}
