@@ -20,10 +20,10 @@ func TestCallList(t *testing.T) {
 func TestMakingCall(t *testing.T) {
   client := NewClient(TEST_KEY, TEST_TOKEN)
 
-  message, err := NewCall(client, TEST_FROM_NUMBER, TO_NUMBER, Callback("http://test.com"))
+  call, err := NewCall(client, TEST_FROM_NUMBER, TO_NUMBER, Callback("http://test.com"))
 
   if assert.Nil(t, err, "Failed to make call") {
-    assert.Equal(t, message.Status, "queued", "Making Call failed, status: " + message.Status)
+    assert.Equal(t, call.Status, "queued", "Making Call failed, status: " + call.Status)
   }
 }
 
@@ -55,3 +55,4 @@ func TestGetCall(t *testing.T) {
     }
   }
 }
+
