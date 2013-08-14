@@ -6,6 +6,8 @@ import (
 )
 
 func TestIntegrationMessageList(t *testing.T) {
+  CheckTestEnv(t)
+
   client := NewClient(API_KEY, API_TOKEN)
 
   messageList, err := GetMessageList(client)
@@ -17,6 +19,8 @@ func TestIntegrationMessageList(t *testing.T) {
 }
 
 func TestIntegrationSendSMS(t *testing.T) {
+  CheckTestEnv(t)
+
   client := NewClient(TEST_KEY, TEST_TOKEN)
 
   message, err := NewMessage(client, TEST_FROM_NUMBER, TO_NUMBER, "Test Message")
@@ -27,6 +31,8 @@ func TestIntegrationSendSMS(t *testing.T) {
 }
 
 func TestIntegrationMessageListNextPage(t *testing.T) {
+  CheckTestEnv(t)
+
   client := NewClient(API_KEY, API_TOKEN)
 
   messageList, err := GetMessageList(client)
@@ -41,6 +47,8 @@ func TestIntegrationMessageListNextPage(t *testing.T) {
 }
 
 func TestIntegrationGetMessage(t *testing.T) {
+  CheckTestEnv(t)
+
   client := NewClient(API_KEY, API_TOKEN)
 
   messageList, err := GetMessageList(client)
