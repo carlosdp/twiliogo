@@ -106,3 +106,15 @@ func (dateSent DateSent) GetParam() (string, string) {
   return "DateSent", string(dateSent)
 }
 
+type Body string
+
+func (body Body) GetParam() (string, string) {
+  return "Body", string(body)
+}
+
+type MediaUrl string
+
+func (mediaUrl MediaUrl) GetParam() (string, string) {
+  return "MediaUrl", string(mediaUrl)
+}
+
