@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/carlosdp/twiliogo.png?branch=master)](https://travis-ci.org/carlosdp/twiliogo)
 # twilio-go
 The unofficial Go helper library for [Twilio](http://twilio.com).
 
