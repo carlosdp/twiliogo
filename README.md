@@ -16,7 +16,7 @@ package main
 
 import (
   "fmt"
-  "github.com/carlosdp/twilio-go
+  "github.com/carlosdp/twilio-go"
 )
 
 func main() {
@@ -54,3 +54,52 @@ func main() {
   }
 }
 ```
+
+## Implemented Resources
+- Calls
+- Messages
+- IncomingPhoneNumbers (partial)
+
+## Run Tests
+Tests can be run using `go test`, as with most golang projects. This project also contains integration tests (where they can be done non-destructively using the API or the working Test Credential endpoints).
+
+These integration tests can be run by providing the necessary environment variables to access the API, as in this Makefile:
+
+```makefile
+test:
+	@export API_KEY="<API KEY>";\
+	export API_TOKEN="<API TOKEN>";\
+	export TEST_KEY="<TEST KEY>";\
+	export TEST_TOKEN="<TEST TOKEN>";\
+	export TEST_FROM_NUMBER="<DEFAULT TEST CRED NUMBER>";\
+	export FROM_NUMBER="<TEST FROM NUMBER>";\
+	export TO_NUMBER="<TEST TO NUMBER>";\
+	go test -v
+```
+
+## Contributing
+This is a side project meant to allow for quick adoption of the Twilio API for those programming web applications with it in Go. Feel free to submit pull requests so that we can cover all of the features the Twilio API has to offer!
+
+## To Do
+Here are a few things that the project needs in order to reach v1.0:
+
+1. Complete test coverage. Right now, tests cover the bare minimum of usage for each feature implemented.
+2. Complete IncomingPhoneNumber functionality.
+3. Implement the following resources:
+  - AvailablePhoneNumbers
+  - OutgoingCallerIds
+  - Applications
+  - ConnectApps
+  - AuthorizedConnectApps
+  - Conferences
+  - Queues
+  - Short Codes
+  - Recordings
+  - Transcriptions
+  - Notifications
+  - SIP Domains
+  - IpAccessControlLists
+  - CredentialLists
+  - Usage Records
+  - Usage Triggers
+
