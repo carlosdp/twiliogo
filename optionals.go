@@ -118,3 +118,21 @@ func (mediaUrl MediaUrl) GetParam() (string, string) {
   return "MediaUrl", string(mediaUrl)
 }
 
+type FriendlyName string
+
+func (friendlyName FriendlyName) GetParam() (string, string) {
+  return "FriendlyName", string(friendlyName)
+}
+
+type PhoneNumber string
+
+func (phoneNumber PhoneNumber) GetParam() (string, string) {
+  return "PhoneNumber", string(phoneNumber)
+}
+
+type AreaCode string
+
+func (areaCode AreaCode) GetParam() (string, string) {
+  return "AreaCode", string(areaCode)
+}
+
