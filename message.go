@@ -59,7 +59,7 @@ func NewMessage(client Client, from string, to string, content ...Optional) (*Me
 func GetMessage(client Client, sid string) (*Message, error) {
   var message *Message
 
-  res, err := client.get(nil, client.RootUrl() + "/Messages/" + sid + ".json")
+  res, err := client.get(url.Values{}, client.RootUrl() + "/Messages/" + sid + ".json")
 
   if err != nil {
     return nil, err
