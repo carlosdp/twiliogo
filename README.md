@@ -103,3 +103,6 @@ Here are a few things that the project needs in order to reach v1.0:
   - Usage Records
   - Usage Triggers
 
+## License
+This project is licensed under the [MIT License](http://opensource.org/licenses/MIT)
+
