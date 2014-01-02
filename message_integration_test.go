@@ -29,6 +29,7 @@ func TestIntegrationSendSMS(t *testing.T) {
   /* if assert.Nil(t, err, "Failed to Send SMS") { */
   /*   assert.Equal(t, message.Status, "queued", "Sending SMS failed, status: " + message.Status) */
   /* } */
+  t.Skip()
 }
 
 func TestIntegrationMessageListNextPage(t *testing.T) {
