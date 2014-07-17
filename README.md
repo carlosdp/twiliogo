@@ -5,7 +5,7 @@ The unofficial Go helper library for [Twilio](http://twilio.com).
 # Installation
 
 ``` bash
-go get github.com/carlosdp/twilio-go
+go get github.com/carlosdp/twiliogo
 ```
 
 # Usage
@@ -17,7 +17,7 @@ package main
 
 import (
   "fmt"
-  "github.com/carlosdp/twilio-go"
+  twilio "github.com/carlosdp/twiliogo"
 )
 
 func main() {
@@ -40,7 +40,7 @@ package main
 
 import (
   "fmt"
-  "github.com/carlosdp/twilio-go"
+  twilio "github.com/carlosdp/twiliogo"
 )
 
 func main() {
