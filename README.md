@@ -23,7 +23,7 @@ import (
 func main() {
   client := twilio.NewClient("<ACCOUNT_SID", "<AUTH_TOKEN>")
 
-  message, err := twilio.SendMessage(client, "3334445555", "2223334444", "Hello World!")
+  message, err := twilio.SendMessage(client, "3334445555", "2223334444", Body("Hello World!"))
 
   if err != nil {
     fmt.Println(err)
