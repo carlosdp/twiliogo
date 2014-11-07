@@ -8,6 +8,10 @@ The unofficial Go helper library for [Twilio](http://twilio.com).
 go get github.com/carlosdp/twiliogo
 ```
 
+# Documentation
+
+[GoDoc](http://godoc.org/github.com/carlosdp/twiliogo)
+
 # Usage
 
 ## Send a Text
@@ -23,7 +27,7 @@ import (
 func main() {
   client := twilio.NewClient("<ACCOUNT_SID", "<AUTH_TOKEN>")
 
-  message, err := twilio.NewMessage(client, "3334445555", "2223334444", Body("Hello World!"))
+  message, err := twilio.NewMessage(client, "3334445555", "2223334444", twilio.Body("Hello World!"))
 
   if err != nil {
     fmt.Println(err)
