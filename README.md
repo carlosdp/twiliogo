@@ -46,7 +46,7 @@ import (
 func main() {
   client := twilio.NewClient("<ACCOUNT_SID>", "<AUTH_TOKEN>")
 
-  call, err := twilio.MakeCall(client, "8883332222", "3334443333")
+  call, err := twilio.NewCall(client, "8883332222", "3334443333", nil)
 
   if err != nil {
     fmt.Println(err)
