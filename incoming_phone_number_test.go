@@ -2,9 +2,10 @@ package twiliogo
 
 import (
 	"encoding/json"
-	"github.com/stretchr/testify/assert"
 	"net/url"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var testNumber = IncomingPhoneNumber{
@@ -16,12 +17,14 @@ var testNumber = IncomingPhoneNumber{
 	VoiceMethod:          "POST",
 	VoiceFallbackUrl:     "http://fail.com",
 	VoiceFallbackMethod:  "GET",
+	VoiceCallerIdLookup:  true,
 	StatusCallback:       "http://status.com",
 	StatusCallbackMethod: "GET",
 	SmsUrl:               "http://sms.com",
 	SmsMethod:            "GET",
 	DateCreated:          "2013-05-11",
 	DateUpdated:          "2013-05-11",
+	Capabilities:         Capabilites{true, true, true},
 	ApiVersion:           "2008-04-01",
 	Uri:                  "/2010-04-01/Accounts/AC3TestAccount/Messages/testsid.json",
 }
