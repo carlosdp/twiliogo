@@ -30,18 +30,18 @@ func NewMessage(client Client, from string, to string, content ...Optional) (*Me
 	params.Set("From", from)
 	params.Set("To", to)
 
-	if len(content) < 1 {
-		return nil, Error{"Must have at least a Body or MediaUrl"}
-	}
-
 	for _, optional := range content {
 		param, value := optional.GetParam()
 
-		if param != "Body" && param != "MediaUrl" {
-			return nil, Error{"Only Body or MediaUrl allowed"}
+		if param != "Body" && param != "MediaUrl" && param != "StatusCallback" && param != "ApplicationSid" {
+			return nil, Error{"Only allowed params are Body, MediaUrl, StatusCallback, ApplicationSid"}
 		}
 
 		params.Set(param, value)
+	}
+
+	if params.Get("Body") == "" && params.Get("MediaUrl") == "" {
+		return nil, Error{"Must have at least a Body or MediaUrl"}
 	}
 
 	res, err := client.post(params, client.RootUrl()+"/Messages.json")
