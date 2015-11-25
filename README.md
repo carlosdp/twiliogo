@@ -25,7 +25,7 @@ import (
 )
 
 func main() {
-  client := twilio.NewClient("<ACCOUNT_SID", "<AUTH_TOKEN>")
+  client := twilio.NewClient("<ACCOUNT_SID>", "<AUTH_TOKEN>")
 
   message, err := twilio.NewMessage(client, "3334445555", "2223334444", twilio.Body("Hello World!"))
 
