@@ -1,8 +1,9 @@
 package twiliogo
 
 import (
-	"github.com/stretchr/testify/mock"
 	"net/url"
+
+	"github.com/stretchr/testify/mock"
 )
 
 type MockClient struct {
@@ -29,4 +30,17 @@ func (client *MockClient) get(params url.Values, uri string) ([]byte, error) {
 func (client *MockClient) post(params url.Values, uri string) ([]byte, error) {
 	args := client.Mock.Called(params, uri)
 	return args.Get(0).([]byte), args.Error(1)
+}
+
+func (client *MockClient) getIP(params url.Values, uri string) ([]byte, error) {
+	args := client.Mock.Called(params, uri)
+	return args.Get(0).([]byte), args.Error(1)
+}
+func (client *MockClient) postIP(params url.Values, uri string) ([]byte, error) {
+	args := client.Mock.Called(params, uri)
+	return args.Get(0).([]byte), args.Error(1)
+}
+func (client *MockClient) deleteIP(uri string) error {
+	args := client.Mock.Called(nil, uri)
+	return args.Error(1)
 }

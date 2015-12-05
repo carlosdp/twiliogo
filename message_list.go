@@ -17,7 +17,7 @@ type MessageList struct {
 	FirstPageUri    string    `json:"first_page_uri"`
 	LastPageUri     string    `json:"last_page_uri"`
 	NextPageUri     string    `json:"next_page_uri"`
-	PreviousPageUri string    `json"previous_page_uri"`
+	PreviousPageUri string    `json":previous_page_uri"`
 	Messages        []Message `json:"sms_messages"`
 }
 
