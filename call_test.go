@@ -2,9 +2,10 @@ package twiliogo
 
 import (
 	"encoding/json"
-	"github.com/stretchr/testify/assert"
 	"net/url"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var testCall = Call{
@@ -39,7 +40,7 @@ func TestNewCall(t *testing.T) {
 	params.Set("To", "5555555555")
 	params.Set("Url", "http://callback.com")
 
-	client.On("post", params, client.RootUrl()+"/Calls.json").Return(callJson, nil)
+	client.On("post", params, "/Calls.json").Return(callJson, nil)
 
 	call, err := NewCall(client, "6666666666", "5555555555", Callback("http://callback.com"))
 
@@ -55,7 +56,7 @@ func TestGetCall(t *testing.T) {
 
 	callJson, _ := json.Marshal(testCall)
 
-	client.On("get", url.Values{}, client.RootUrl()+"/Calls/testsid.json").Return(callJson, nil)
+	client.On("get", url.Values{}, "/Calls/testsid.json").Return(callJson, nil)
 
 	call, err := GetCall(client, "testsid")
 

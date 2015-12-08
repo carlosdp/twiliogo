@@ -17,7 +17,7 @@ type MessageList struct {
 	FirstPageUri    string    `json:"first_page_uri"`
 	LastPageUri     string    `json:"last_page_uri"`
 	NextPageUri     string    `json:"next_page_uri"`
-	PreviousPageUri string    `json"previous_page_uri"`
+	PreviousPageUri string    `json":previous_page_uri"`
 	Messages        []Message `json:"sms_messages"`
 }
 
@@ -31,7 +31,7 @@ func GetMessageList(client Client, optionals ...Optional) (*MessageList, error) 
 		params.Set(param, value)
 	}
 
-	body, err := client.get(params, client.RootUrl()+"/SMS/Messages.json")
+	body, err := client.get(params, "/SMS/Messages.json")
 
 	if err != nil {
 		return messageList, err

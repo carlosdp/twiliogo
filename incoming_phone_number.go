@@ -39,7 +39,7 @@ type IncomingPhoneNumber struct {
 func GetIncomingPhoneNumber(client Client, sid string) (*IncomingPhoneNumber, error) {
 	var incomingPhoneNumber *IncomingPhoneNumber
 
-	res, err := client.get(url.Values{}, client.RootUrl()+"/IncomingPhoneNumbers/"+sid+".json")
+	res, err := client.get(url.Values{}, "/IncomingPhoneNumbers/"+sid+".json")
 
 	if err != nil {
 		return nil, err
@@ -62,7 +62,7 @@ func BuyPhoneNumber(client Client, number Optional) (*IncomingPhoneNumber, error
 	param, value := number.GetParam()
 	params.Set(param, value)
 
-	res, err := client.post(params, client.RootUrl()+"/IncomingPhoneNumbers.json")
+	res, err := client.post(params, "/IncomingPhoneNumbers.json")
 
 	if err != nil {
 		return incomingPhoneNumber, err

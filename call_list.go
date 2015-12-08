@@ -31,7 +31,7 @@ func GetCallList(client Client, optionals ...Optional) (*CallList, error) {
 		params.Set(param, value)
 	}
 
-	body, err := client.get(nil, client.RootUrl()+"/Calls.json")
+	body, err := client.get(nil, "/Calls.json")
 
 	if err != nil {
 		return nil, err
