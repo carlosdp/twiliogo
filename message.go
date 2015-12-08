@@ -44,7 +44,7 @@ func NewMessage(client Client, from string, to string, content ...Optional) (*Me
 		return nil, Error{"Must have at least a Body or MediaUrl"}
 	}
 
-	res, err := client.post(params, client.RootUrl()+"/Messages.json")
+	res, err := client.post(params, "/Messages.json")
 
 	if err != nil {
 		return message, err
@@ -59,7 +59,7 @@ func NewMessage(client Client, from string, to string, content ...Optional) (*Me
 func GetMessage(client Client, sid string) (*Message, error) {
 	var message *Message
 
-	res, err := client.get(url.Values{}, client.RootUrl()+"/Messages/"+sid+".json")
+	res, err := client.get(url.Values{}, "/Messages/"+sid+".json")
 
 	if err != nil {
 		return nil, err

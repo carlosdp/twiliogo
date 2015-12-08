@@ -11,9 +11,6 @@ import (
 
 const ROOT = "https://api.twilio.com"
 const VERSION = "2010-04-01"
-const IP_MESSAGING_ROOT = "https://ip-messaging.twilio.com"
-const IP_MESSAGING_VERSION = "v1"
-const IP_MESSAGING_ROOT_URL = IP_MESSAGING_ROOT + "/" + IP_MESSAGING_VERSION
 
 type Client interface {
 	AccountSid() string
@@ -21,9 +18,7 @@ type Client interface {
 	RootUrl() string
 	get(url.Values, string) ([]byte, error)
 	post(url.Values, string) ([]byte, error)
-	getIP(url.Values, string) ([]byte, error)
-	postIP(url.Values, string) ([]byte, error)
-	deleteIP(string) error
+	delete(string) error
 }
 
 type TwilioClient struct {
@@ -32,57 +27,15 @@ type TwilioClient struct {
 	rootUrl    string
 }
 
+var _ Client = &TwilioClient{}
+
 func NewClient(accountSid, authToken string) *TwilioClient {
-	rootUrl := "/" + VERSION + "/Accounts/" + accountSid
+	rootUrl := ROOT + "/" + VERSION + "/Accounts/" + accountSid
 	return &TwilioClient{accountSid, authToken, rootUrl}
 }
 
 func (client *TwilioClient) post(values url.Values, uri string) ([]byte, error) {
-	if !strings.HasPrefix(uri, "http") {
-		uri = ROOT + uri
-	}
-	req, err := http.NewRequest("POST", uri, strings.NewReader(values.Encode()))
-
-	if err != nil {
-		return nil, err
-	}
-
-	req.SetBasicAuth(client.AccountSid(), client.AuthToken())
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-	httpClient := &http.Client{}
-
-	res, err := httpClient.Do(req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	defer res.Body.Close()
-
-	body, err := ioutil.ReadAll(res.Body)
-
-	if err != nil {
-		return body, err
-	}
-
-	if res.StatusCode != 200 && res.StatusCode != 201 {
-		if res.StatusCode == 500 {
-			return body, Error{"Server Error"}
-		} else {
-			twilioError := new(TwilioError)
-			json.Unmarshal(body, twilioError)
-			return body, twilioError
-		}
-	}
-
-	return body, err
-}
-
-func (client *TwilioClient) postIP(values url.Values, uri string) ([]byte, error) {
-	if !strings.HasPrefix(uri, "http") {
-		uri = IP_MESSAGING_ROOT_URL + uri
-	}
-	req, err := http.NewRequest("POST", uri, strings.NewReader(values.Encode()))
+	req, err := http.NewRequest("POST", client.buildUri(uri), strings.NewReader(values.Encode()))
 
 	if err != nil {
 		return nil, err
@@ -120,9 +73,6 @@ func (client *TwilioClient) postIP(values url.Values, uri string) ([]byte, error
 }
 
 func (client *TwilioClient) get(queryParams url.Values, uri string) ([]byte, error) {
-	if !strings.HasPrefix(uri, "http") {
-		uri = ROOT + uri
-	}
 	var params *strings.Reader
 
 	if queryParams == nil {
@@ -130,7 +80,7 @@ func (client *TwilioClient) get(queryParams url.Values, uri string) ([]byte, err
 	}
 
 	params = strings.NewReader(queryParams.Encode())
-	req, err := http.NewRequest("GET", uri, params)
+	req, err := http.NewRequest("GET", client.buildUri(uri), params)
 
 	if err != nil {
 		return nil, err
@@ -166,58 +116,8 @@ func (client *TwilioClient) get(queryParams url.Values, uri string) ([]byte, err
 	return body, err
 }
 
-func (client *TwilioClient) getIP(queryParams url.Values, uri string) ([]byte, error) {
-	if !strings.HasPrefix(uri, "http") {
-		uri = IP_MESSAGING_ROOT_URL + uri
-	}
-	var params *strings.Reader
-
-	if queryParams == nil {
-		queryParams = url.Values{}
-	}
-
-	params = strings.NewReader(queryParams.Encode())
-	req, err := http.NewRequest("GET", uri, params)
-
-	if err != nil {
-		return nil, err
-	}
-
-	req.SetBasicAuth(client.AccountSid(), client.AuthToken())
-	httpClient := &http.Client{}
-
-	res, err := httpClient.Do(req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	defer res.Body.Close()
-
-	body, err := ioutil.ReadAll(res.Body)
-
-	if err != nil {
-		return body, err
-	}
-
-	if res.StatusCode != 200 && res.StatusCode != 201 {
-		if res.StatusCode == 500 {
-			return body, Error{"Server Error"}
-		} else {
-			twilioError := new(TwilioError)
-			json.Unmarshal(body, twilioError)
-			return body, twilioError
-		}
-	}
-
-	return body, err
-}
-
-func (client *TwilioClient) deleteIP(uri string) error {
-	if !strings.HasPrefix(uri, "http") {
-		uri = IP_MESSAGING_ROOT_URL + uri
-	}
-	req, err := http.NewRequest("DELETE", uri, nil)
+func (client *TwilioClient) delete(uri string) error {
+	req, err := http.NewRequest("DELETE", client.buildUri(uri), nil)
 
 	if err != nil {
 		return err
@@ -251,4 +151,24 @@ func (client *TwilioClient) AuthToken() string {
 
 func (client *TwilioClient) RootUrl() string {
 	return client.rootUrl
+}
+
+func (client *TwilioClient) buildUri(parts ...string) string {
+	if len(parts) == 0 {
+		return ""
+	}
+
+	newParts := make([]string, 0, len(parts))
+	// Check for "http" because sometimes we get raw URLs from following the metadata.
+	if !strings.HasPrefix(parts[0], "http") {
+		newParts = append(newParts, client.RootUrl())
+	}
+	for _, p := range parts {
+		p = strings.Trim(p, "/")
+		if p == "" {
+			continue
+		}
+		newParts = append(newParts, p)
+	}
+	return strings.Join(newParts, "/")
 }

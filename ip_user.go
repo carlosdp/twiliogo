@@ -20,20 +20,20 @@ type IPUser struct {
 // IPUserList gives the results for querying the set of users. Returns the first page
 // by default.
 type IPUserList struct {
-	Client Client
+	Client *TwilioIPMessagingClient
 	Users  []IPUser `json:"users"`
 	Meta   Meta     `json:"meta"`
 }
 
 // NewIPUser creates a new IP Messaging User.
-func NewIPUser(client Client, serviceSid string, identity string, roleSid string) (*IPUser, error) {
+func NewIPUser(client *TwilioIPMessagingClient, serviceSid string, identity string, roleSid string) (*IPUser, error) {
 	var user *IPUser
 
 	params := url.Values{}
 	params.Set("Identity", identity)
 	params.Set("RoleSid", roleSid)
 
-	res, err := client.postIP(params, "/Services/"+serviceSid+"/Users.json")
+	res, err := client.post(params, "/Services/"+serviceSid+"/Users.json")
 
 	if err != nil {
 		return user, err
@@ -46,10 +46,10 @@ func NewIPUser(client Client, serviceSid string, identity string, roleSid string
 }
 
 // GetIPUser returns information on the specified user.
-func GetIPUser(client Client, serviceSid, sid string) (*IPUser, error) {
+func GetIPUser(client *TwilioIPMessagingClient, serviceSid, sid string) (*IPUser, error) {
 	var user *IPUser
 
-	res, err := client.getIP(url.Values{}, "/Services/"+serviceSid+"/Users/"+sid+".json")
+	res, err := client.get(url.Values{}, "/Services/"+serviceSid+"/Users/"+sid+".json")
 
 	if err != nil {
 		return nil, err
@@ -62,19 +62,19 @@ func GetIPUser(client Client, serviceSid, sid string) (*IPUser, error) {
 }
 
 // DeleteIPUser deletes the given IP user.
-func DeleteIPUser(client Client, serviceSid, sid string) error {
-	return client.deleteIP("/Services/" + serviceSid + "/Users/" + sid)
+func DeleteIPUser(client *TwilioIPMessagingClient, serviceSid, sid string) error {
+	return client.delete("/Services/" + serviceSid + "/Users/" + sid)
 }
 
 // UpdateIPUser updates an existing IP Messaging user.
-func UpdateIPUser(client Client, serviceSid string, sid string, identity string, roleSid string) (*IPUser, error) {
+func UpdateIPUser(client *TwilioIPMessagingClient, serviceSid string, sid string, identity string, roleSid string) (*IPUser, error) {
 	var user *IPUser
 
 	params := url.Values{}
 	params.Set("Identity", identity)
 	params.Set("RoleSid", roleSid)
 
-	res, err := client.postIP(params, "/Services/"+serviceSid+"/Users/"+sid+".json")
+	res, err := client.post(params, "/Services/"+serviceSid+"/Users/"+sid+".json")
 
 	if err != nil {
 		return user, err
@@ -87,10 +87,10 @@ func UpdateIPUser(client Client, serviceSid string, sid string, identity string,
 }
 
 // ListIPUsers returns the first page of users.
-func ListIPUsers(client Client, serviceSid string) (*IPUserList, error) {
+func ListIPUsers(client *TwilioIPMessagingClient, serviceSid string) (*IPUserList, error) {
 	var userList *IPUserList
 
-	body, err := client.getIP(nil, "/Services/"+serviceSid+"/Users.json")
+	body, err := client.get(nil, "/Services/"+serviceSid+"/Users.json")
 
 	if err != nil {
 		return userList, err
@@ -167,7 +167,7 @@ func (s *IPUserList) getPage(uri string) (*IPUserList, error) {
 
 	client := s.Client
 
-	body, err := client.getIP(nil, uri)
+	body, err := client.get(nil, uri)
 
 	if err != nil {
 		return userList, err

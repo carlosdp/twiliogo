@@ -23,3 +23,11 @@ func CheckTestEnv(t *testing.T) {
 		t.SkipNow()
 	}
 }
+
+func TestBuildUri(t *testing.T) {
+	c := NewClient("abc", "")
+	uri := c.buildUri("qzx")
+	if uri != ROOT+"/"+VERSION+"/Accounts/abc/qzx" {
+		t.Errorf("buildUri failed: got %s", uri)
+	}
+}

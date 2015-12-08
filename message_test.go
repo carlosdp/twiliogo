@@ -2,9 +2,10 @@ package twiliogo
 
 import (
 	"encoding/json"
-	"github.com/stretchr/testify/assert"
 	"net/url"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var testMessage = Message{
@@ -35,7 +36,7 @@ func TestNewMessage(t *testing.T) {
 	params.Set("To", "5555555555")
 	params.Set("Body", "TestBody")
 
-	client.On("post", params, client.RootUrl()+"/Messages.json").Return(messageJson, nil)
+	client.On("post", params, "/Messages.json").Return(messageJson, nil)
 
 	message, err := NewMessage(client, "6666666666", "5555555555", Body("TestBody"))
 
@@ -51,7 +52,7 @@ func TestGetMessage(t *testing.T) {
 
 	messageJson, _ := json.Marshal(testMessage)
 
-	client.On("get", url.Values{}, client.RootUrl()+"/Messages/testsid.json").Return(messageJson, nil)
+	client.On("get", url.Values{}, "/Messages/testsid.json").Return(messageJson, nil)
 
 	message, err := GetMessage(client, "testsid")
 

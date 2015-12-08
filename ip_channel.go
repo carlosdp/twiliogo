@@ -30,7 +30,7 @@ type IPChannelList struct {
 }
 
 // NewIPChannel creates a new IP Messaging Channel.
-func NewIPChannel(client Client, serviceSid string, friendlyName string, uniqueName string, public bool, attributes string) (*IPChannel, error) {
+func NewIPChannel(client *TwilioIPMessagingClient, serviceSid string, friendlyName string, uniqueName string, public bool, attributes string) (*IPChannel, error) {
 	var channel *IPChannel
 
 	params := url.Values{}
@@ -43,7 +43,7 @@ func NewIPChannel(client Client, serviceSid string, friendlyName string, uniqueN
 	params.Set("Type", kind)
 	params.Set("Attributes", attributes)
 
-	res, err := client.postIP(params, "/Services/"+serviceSid+"/Channels.json")
+	res, err := client.post(params, "/Services/"+serviceSid+"/Channels.json")
 
 	if err != nil {
 		return channel, err
@@ -56,7 +56,7 @@ func NewIPChannel(client Client, serviceSid string, friendlyName string, uniqueN
 }
 
 // UpdateIPChannel updates ane existing IP Messaging Channel.
-func UpdateIPChannel(client Client, serviceSid string, sid string, friendlyName string, uniqueName string, public bool, attributes string) (*IPChannel, error) {
+func UpdateIPChannel(client *TwilioIPMessagingClient, serviceSid string, sid string, friendlyName string, uniqueName string, public bool, attributes string) (*IPChannel, error) {
 	var channel *IPChannel
 
 	params := url.Values{}
@@ -69,7 +69,7 @@ func UpdateIPChannel(client Client, serviceSid string, sid string, friendlyName 
 	params.Set("Type", kind)
 	params.Set("Attributes", attributes)
 
-	res, err := client.postIP(params, "/Services/"+serviceSid+"/Channels/"+sid+".json")
+	res, err := client.post(params, "/Services/"+serviceSid+"/Channels/"+sid+".json")
 
 	if err != nil {
 		return channel, err
@@ -82,10 +82,10 @@ func UpdateIPChannel(client Client, serviceSid string, sid string, friendlyName 
 }
 
 // GetIPChannel returns the specified IP Channel.
-func GetIPChannel(client Client, serviceSid string, sid string) (*IPChannel, error) {
+func GetIPChannel(client *TwilioIPMessagingClient, serviceSid string, sid string) (*IPChannel, error) {
 	var channel *IPChannel
 
-	res, err := client.getIP(url.Values{}, "/Services/"+serviceSid+"/Channels/"+sid+".json")
+	res, err := client.get(url.Values{}, "/Services/"+serviceSid+"/Channels/"+sid+".json")
 
 	if err != nil {
 		return nil, err
@@ -98,15 +98,15 @@ func GetIPChannel(client Client, serviceSid string, sid string) (*IPChannel, err
 }
 
 // DeleteIPChannel deletes the given IP Channel.
-func DeleteIPChannel(client Client, serviceSid, sid string) error {
-	return client.deleteIP("/Services/" + serviceSid + "/Channels/" + sid)
+func DeleteIPChannel(client *TwilioIPMessagingClient, serviceSid, sid string) error {
+	return client.delete("/Services/" + serviceSid + "/Channels/" + sid)
 }
 
 // ListIPChannels returns the first page of channels.
-func ListIPChannels(client Client, serviceSid string) (*IPChannelList, error) {
+func ListIPChannels(client *TwilioIPMessagingClient, serviceSid string) (*IPChannelList, error) {
 	var channelList *IPChannelList
 
-	body, err := client.getIP(nil, "/Services/"+serviceSid+"/Channels.json")
+	body, err := client.get(nil, "/Services/"+serviceSid+"/Channels.json")
 
 	if err != nil {
 		return channelList, err
@@ -183,7 +183,7 @@ func (c *IPChannelList) getPage(uri string) (*IPChannelList, error) {
 
 	client := c.Client
 
-	body, err := client.getIP(nil, uri)
+	body, err := client.get(nil, uri)
 
 	if err != nil {
 		return channelList, err

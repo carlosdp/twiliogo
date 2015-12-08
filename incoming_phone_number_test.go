@@ -37,7 +37,7 @@ func TestBuyPhoneNumber(t *testing.T) {
 	params := url.Values{}
 	params.Set("PhoneNumber", "4444444444")
 
-	client.On("post", params, client.RootUrl()+"/IncomingPhoneNumbers.json").Return(numberJson, nil)
+	client.On("post", params, "/IncomingPhoneNumbers.json").Return(numberJson, nil)
 
 	number, err := BuyPhoneNumber(client, PhoneNumber("4444444444"))
 
@@ -53,7 +53,7 @@ func TestGetIncomingPhoneNumber(t *testing.T) {
 
 	numberJson, _ := json.Marshal(testNumber)
 
-	client.On("get", url.Values{}, client.RootUrl()+"/IncomingPhoneNumbers/testsid.json").Return(numberJson, nil)
+	client.On("get", url.Values{}, "/IncomingPhoneNumbers/testsid.json").Return(numberJson, nil)
 
 	number, err := GetIncomingPhoneNumber(client, "testsid")
 

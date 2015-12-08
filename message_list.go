@@ -31,7 +31,7 @@ func GetMessageList(client Client, optionals ...Optional) (*MessageList, error) 
 		params.Set(param, value)
 	}
 
-	body, err := client.get(params, client.RootUrl()+"/SMS/Messages.json")
+	body, err := client.get(params, "/SMS/Messages.json")
 
 	if err != nil {
 		return messageList, err

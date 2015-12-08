@@ -31,7 +31,7 @@ func GetIncomingPhoneNumberList(client Client, optionals ...Optional) (*Incoming
 		params.Set(param, value)
 	}
 
-	body, err := client.get(params, client.RootUrl()+"/IncomingPhoneNumbers.json")
+	body, err := client.get(params, "/IncomingPhoneNumbers.json")
 
 	if err != nil {
 		return nil, err

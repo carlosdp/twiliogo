@@ -85,7 +85,7 @@ func durationToISO8601(d time.Duration) (string, error) {
 }
 
 // NewIPService creates a new IP Messaging Service.
-func NewIPService(client Client, friendlyName string, defaultServiceRoleSid string, defaultChannelRoleSid string,
+func NewIPService(client *TwilioIPMessagingClient, friendlyName string, defaultServiceRoleSid string, defaultChannelRoleSid string,
 	typingIndicatorTimeout time.Duration, webhooks Webhooks) (*IPService, error) {
 
 	timeout, err := durationToISO8601(typingIndicatorTimeout)
@@ -106,7 +106,7 @@ func NewIPService(client Client, friendlyName string, defaultServiceRoleSid stri
 		}
 	}
 
-	res, err := client.postIP(params, "/Services.json")
+	res, err := client.post(params, "/Services.json")
 
 	if err != nil {
 		return service, err
@@ -119,10 +119,10 @@ func NewIPService(client Client, friendlyName string, defaultServiceRoleSid stri
 }
 
 // GetIPService returns information on the specified service.
-func GetIPService(client Client, sid string) (*IPService, error) {
+func GetIPService(client *TwilioIPMessagingClient, sid string) (*IPService, error) {
 	var service *IPService
 
-	res, err := client.getIP(url.Values{}, "/Services/"+sid+".json")
+	res, err := client.get(url.Values{}, "/Services/"+sid+".json")
 
 	if err != nil {
 		return nil, err
@@ -135,12 +135,12 @@ func GetIPService(client Client, sid string) (*IPService, error) {
 }
 
 // DeleteIPService deletes the given IP Service.
-func DeleteIPService(client Client, sid string) error {
-	return client.deleteIP("/Services/" + sid)
+func DeleteIPService(client *TwilioIPMessagingClient, sid string) error {
+	return client.delete("/Services/" + sid)
 }
 
 // UpdateIPService updates an existing IP Messaging Service.
-func UpdateIPService(client Client, sid string, friendlyName string, defaultServiceRoleSid string, defaultChannelRoleSid string,
+func UpdateIPService(client *TwilioIPMessagingClient, sid string, friendlyName string, defaultServiceRoleSid string, defaultChannelRoleSid string,
 	typingIndicatorTimeout time.Duration, webhooks Webhooks) (*IPService, error) {
 
 	timeout, err := durationToISO8601(typingIndicatorTimeout)
@@ -159,7 +159,7 @@ func UpdateIPService(client Client, sid string, friendlyName string, defaultServ
 		params.Set(k, v)
 	}
 
-	res, err := client.postIP(params, "/Services/"+sid+".json")
+	res, err := client.post(params, "/Services/"+sid+".json")
 
 	if err != nil {
 		return service, err
@@ -172,10 +172,10 @@ func UpdateIPService(client Client, sid string, friendlyName string, defaultServ
 }
 
 // ListIPServices returns the first page of services.
-func ListIPServices(client Client) (*IPServiceList, error) {
+func ListIPServices(client *TwilioIPMessagingClient) (*IPServiceList, error) {
 	var serviceList *IPServiceList
 
-	body, err := client.getIP(nil, "/Services.json")
+	body, err := client.get(nil, "/Services.json")
 
 	if err != nil {
 		return serviceList, err
@@ -252,7 +252,7 @@ func (s *IPServiceList) getPage(uri string) (*IPServiceList, error) {
 
 	client := s.Client
 
-	body, err := client.getIP(nil, uri)
+	body, err := client.get(nil, uri)
 
 	if err != nil {
 		return serviceList, err

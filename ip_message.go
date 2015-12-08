@@ -28,7 +28,7 @@ type IPMessageList struct {
 }
 
 // SendIPMessageToChannel sends a message to a channel.
-func SendIPMessageToChannel(client Client, serviceSid string, channelSid string, from string, body string) (*IPMessage, error) {
+func SendIPMessageToChannel(client *TwilioIPMessagingClient, serviceSid string, channelSid string, from string, body string) (*IPMessage, error) {
 	var message *IPMessage
 
 	params := url.Values{}
@@ -37,7 +37,7 @@ func SendIPMessageToChannel(client Client, serviceSid string, channelSid string,
 		params.Set("From", from)
 	}
 
-	res, err := client.postIP(params, "/Services/"+serviceSid+"/Channels/"+channelSid+"/Messages.json")
+	res, err := client.post(params, "/Services/"+serviceSid+"/Channels/"+channelSid+"/Messages.json")
 
 	if err != nil {
 		return message, err
@@ -50,10 +50,10 @@ func SendIPMessageToChannel(client Client, serviceSid string, channelSid string,
 }
 
 // GetIPChannelMessage returns the specified IP Message in the channel.
-func GetIPChannelMessage(client Client, serviceSid, channelSid, sid string) (*IPMessage, error) {
+func GetIPChannelMessage(client *TwilioIPMessagingClient, serviceSid, channelSid, sid string) (*IPMessage, error) {
 	var message *IPMessage
 
-	res, err := client.getIP(url.Values{}, "/Services/"+serviceSid+"/Channels/"+channelSid+"/Messages/"+sid+".json")
+	res, err := client.get(url.Values{}, "/Services/"+serviceSid+"/Channels/"+channelSid+"/Messages/"+sid+".json")
 
 	if err != nil {
 		return nil, err
@@ -66,10 +66,10 @@ func GetIPChannelMessage(client Client, serviceSid, channelSid, sid string) (*IP
 }
 
 // ListIPMessages returns the first page of messages for a channel.
-func ListIPMessages(client Client, serviceSid, channelSid string) (*IPMessageList, error) {
+func ListIPMessages(client *TwilioIPMessagingClient, serviceSid, channelSid string) (*IPMessageList, error) {
 	var messageList *IPMessageList
 
-	body, err := client.getIP(nil, "/Services/"+serviceSid+"/Channels/"+channelSid+"/Messages.json")
+	body, err := client.get(nil, "/Services/"+serviceSid+"/Channels/"+channelSid+"/Messages.json")
 
 	if err != nil {
 		return messageList, err
@@ -146,7 +146,7 @@ func (c *IPMessageList) getPage(uri string) (*IPMessageList, error) {
 
 	client := c.Client
 
-	body, err := client.getIP(nil, uri)
+	body, err := client.get(nil, uri)
 
 	if err != nil {
 		return messageList, err

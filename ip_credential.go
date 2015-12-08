@@ -25,7 +25,7 @@ type IPCredentialList struct {
 
 // NewIPCredential creates a new IP Messaging Credential.
 // Kind must be apns or gcm.
-func NewIPCredential(client Client, friendlyName string, kind string, sandbox bool, apnsCert string, apnsPrivateKey string,
+func NewIPCredential(client *TwilioIPMessagingClient, friendlyName string, kind string, sandbox bool, apnsCert string, apnsPrivateKey string,
 	gcmApiKey string) (*IPCredential, error) {
 	var credential *IPCredential
 
@@ -47,7 +47,7 @@ func NewIPCredential(client Client, friendlyName string, kind string, sandbox bo
 		params.Set("ApiKey", gcmApiKey)
 	}
 
-	res, err := client.postIP(params, "/Credentials.json")
+	res, err := client.post(params, "/Credentials.json")
 
 	if err != nil {
 		return credential, err
@@ -60,10 +60,10 @@ func NewIPCredential(client Client, friendlyName string, kind string, sandbox bo
 }
 
 // GetIPCredential returns information on the specified credential.
-func GetIPCredential(client Client, sid string) (*IPCredential, error) {
+func GetIPCredential(client *TwilioIPMessagingClient, sid string) (*IPCredential, error) {
 	var credential *IPCredential
 
-	res, err := client.getIP(url.Values{}, "/Credentials/"+sid+".json")
+	res, err := client.get(url.Values{}, "/Credentials/"+sid+".json")
 
 	if err != nil {
 		return nil, err
@@ -76,12 +76,12 @@ func GetIPCredential(client Client, sid string) (*IPCredential, error) {
 }
 
 // DeleteIPCredential deletes the given IP Credential.
-func DeleteIPCredential(client Client, sid string) error {
-	return client.deleteIP("/Credentials/" + sid)
+func DeleteIPCredential(client *TwilioIPMessagingClient, sid string) error {
+	return client.delete("/Credentials/" + sid)
 }
 
 // UpdateIPCredential updates an existing IP Messaging Credential.
-func UpdateIPCredential(client Client, sid string, friendlyName string, kind string, sandbox bool) (*IPCredential, error) {
+func UpdateIPCredential(client *TwilioIPMessagingClient, sid string, friendlyName string, kind string, sandbox bool) (*IPCredential, error) {
 	var credential *IPCredential
 
 	params := url.Values{}
@@ -93,7 +93,7 @@ func UpdateIPCredential(client Client, sid string, friendlyName string, kind str
 		params.Set("Sandbox", "false")
 	}
 
-	res, err := client.postIP(params, "/Credentials/"+sid+".json")
+	res, err := client.post(params, "/Credentials/"+sid+".json")
 
 	if err != nil {
 		return credential, err
@@ -106,10 +106,10 @@ func UpdateIPCredential(client Client, sid string, friendlyName string, kind str
 }
 
 // ListIPCredentials returns the first page of credentials.
-func ListIPCredentials(client Client) (*IPCredentialList, error) {
+func ListIPCredentials(client *TwilioIPMessagingClient) (*IPCredentialList, error) {
 	var credentialList *IPCredentialList
 
-	body, err := client.getIP(nil, "/Credentials.json")
+	body, err := client.get(nil, "/Credentials.json")
 
 	if err != nil {
 		return credentialList, err
@@ -186,7 +186,7 @@ func (s *IPCredentialList) getPage(uri string) (*IPCredentialList, error) {
 
 	client := s.Client
 
-	body, err := client.getIP(nil, uri)
+	body, err := client.get(nil, uri)
 
 	if err != nil {
 		return credentialList, err

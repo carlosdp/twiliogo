@@ -42,7 +42,7 @@ func NewCall(client Client, from, to string, callback Optional, optionals ...Opt
 		params.Set(param, value)
 	}
 
-	res, err := client.post(params, client.RootUrl()+"/Calls.json")
+	res, err := client.post(params, "/Calls.json")
 
 	if err != nil {
 		return nil, err
@@ -57,7 +57,7 @@ func NewCall(client Client, from, to string, callback Optional, optionals ...Opt
 func GetCall(client Client, sid string) (*Call, error) {
 	var call *Call
 
-	res, err := client.get(url.Values{}, client.RootUrl()+"/Calls/"+sid+".json")
+	res, err := client.get(url.Values{}, "/Calls/"+sid+".json")
 
 	if err != nil {
 		return nil, err
@@ -79,7 +79,7 @@ func (call *Call) Update(client Client, optionals ...Optional) error {
 		params.Set(param, value)
 	}
 
-	res, err := client.post(params, client.RootUrl()+"/Calls/"+call.Sid+".json")
+	res, err := client.post(params, "/Calls/"+call.Sid+".json")
 
 	if err != nil {
 		return err

@@ -11,7 +11,7 @@ import (
 func TestIntegrationIPMessaging(t *testing.T) {
 	CheckTestEnv(t)
 
-	client := NewClient(API_KEY, API_TOKEN)
+	client := NewIPMessagingClient(API_KEY, API_TOKEN)
 
 	service, err := NewIPService(client, "integration_test", "", "", 60*time.Second, nil)
 
