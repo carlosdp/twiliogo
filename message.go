@@ -33,8 +33,8 @@ func NewMessage(client Client, from string, to string, content ...Optional) (*Me
 	for _, optional := range content {
 		param, value := optional.GetParam()
 
-		if param != "Body" && param != "MediaUrl" && param != "StatusCallback" && param != "ApplicationSid" {
-			return nil, Error{"Only allowed params are Body, MediaUrl, StatusCallback, ApplicationSid"}
+		if param != "Body" && param != "MediaUrl" && param != "StatusCallback" && param != "ApplicationSid" && param != "MessagingServiceSid" {
+			return nil, Error{"Only allowed params are Body, MediaUrl, StatusCallback, ApplicationSid, MessagingServiceSid"}
 		}
 
 		params.Set(param, value)

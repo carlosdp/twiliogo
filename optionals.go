@@ -135,3 +135,9 @@ type AreaCode string
 func (areaCode AreaCode) GetParam() (string, string) {
 	return "AreaCode", string(areaCode)
 }
+
+type MessagingServiceSid string
+
+func (sid MessagingServiceSid) GetParam() (string, string) {
+	return "MessagingServiceSid", string(sid)
+}
