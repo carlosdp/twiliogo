@@ -18,7 +18,7 @@ type IncomingPhoneNumberList struct {
 	LastPageUri          string                `json:"last_page_uri"`
 	NextPageUri          string                `json:"next_page_uri"`
 	PreviousPageUri      string                `json"previous_page_uri"`
-	IncomingPhoneNumbers []IncomingPhoneNumber `json:"sms_messages"`
+	IncomingPhoneNumbers []IncomingPhoneNumber `json:"incoming_phone_numbers"`
 }
 
 func GetIncomingPhoneNumberList(client Client, optionals ...Optional) (*IncomingPhoneNumberList, error) {
